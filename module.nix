@@ -68,7 +68,7 @@ let
           [ "--set" name value ]) value.env;
         pathArgs = map (arg:
           [ "--prefix" "PATH" ":" "${arg}/bin" ]) value.paths;
-        args = lib.strings.escapeShellArgs (envArgs + flagArgs + pathArgs);
+        args = lib.strings.escapeShellArgs (envArgs ++ flagArgs ++ pathArgs);
       in
       pkgs.symlinkJoin {
         inherit (value.package) name;

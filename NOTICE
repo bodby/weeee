@@ -1,4 +1,4 @@
-NixOS module for configuring programs using wrappers and symlinks otherwise
+NixOS module for configuring programs using wrappers and symlinks
 Copyright (C) 2025  Baraa Homsi
 
 This program is free software: you can redistribute it and/or modify
