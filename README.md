@@ -31,7 +31,6 @@ Install this as you would any other NixOS module.
 ```
 
 ### No flakes[^1]
-
 ```nix
 # configuration.nix
 {
