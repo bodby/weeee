@@ -1,6 +1,8 @@
 # About
 NixOS module for configuring programs using wrappers and symlinks.
 
+Currently broken until I finish rewriting my NixOS configuration without ever testing it. B)
+
 ## Features
 - Per-user wrappers and `$HOME` symlinks.
 - Works on my machine.
