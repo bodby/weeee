@@ -42,7 +42,9 @@ I don't actually know if this is the right way to do it.
   ...
 }:
 let
+  # Use either the GitHub or Codeberg repo.
   weeee = builtins.fetchTarball "https://github.com/bodby/weeee/archives/refs/head/master.tar.gz";
+  weeee = builtins.fetchTarball "https://codeberg.org/bodby/weeee/archive/master.tar.gz";
 in {
   imports = [
     (import weeee)
