@@ -8,7 +8,6 @@ let
   inherit (builtins) map;
   inherit (lib.modules) mkOption;
   inherit (lib.types) listOf package attrs attrsOf;
-  inherit (lib.strings) escapeShellArg;
   users = builtins.attrNames config.hrmm;
 
   packageOpts = { name, ... }: {
@@ -64,7 +63,7 @@ let
     ${user}.pkgs = builtins.mapAttrs (name: value:
       let
         flagArgs = map (arg:
-          [ "--add-flags" (escapeShellArg arg) ]) value.flags;
+          [ "--add-flags" (lib.strings.escapeShellArg arg) ]) value.flags;
         envArgs = lib.attrsets.mapAttrsToList (name: value:
           [ "--set" name value ]) value.env;
         pathArgs = map (arg:
