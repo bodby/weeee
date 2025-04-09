@@ -1,8 +1,6 @@
 # About
 NixOS module for configuring programs using wrappers and symlinks.
 
-In other words, an inferior and "minimalist" Home Manager.
-
 ## Features
 - Per-user wrappers and `$HOME` symlinks.
 - Works on my machine.
@@ -30,8 +28,7 @@ Install this as you would any other NixOS module.
 }
 ```
 
-### No flakes
-I don't actually know if this is the right way to do it.
+### No flakes[^1]
 
 ```nix
 # configuration.nix
@@ -55,3 +52,5 @@ in {
 ## Resources
 - [sioodmy/homix](https://github.com/sioodmy/homix)
 - [viperML/wrapper-manager](https://github.com/viperML/wrapper-manager)
+
+[^1]: I don't actually know if this is the right way to do it.
