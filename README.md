@@ -42,10 +42,11 @@ I don't actually know if this is the right way to do it.
   ...
 }:
 let
-  weeeeSrc = builtins.fetchTarball "https://github.com/bodby/weeee/archives/refs/head/master.tar.gz";
-  weeee = import weeeeSrc { inherit config lib pkgs; };
+  weeee = builtins.fetchTarball "https://github.com/bodby/weeee/archives/refs/head/master.tar.gz";
 in {
-  inherit (weeee) options config;
+  imports = [
+    (import weeee)
+  ];
 }
 ```
 
