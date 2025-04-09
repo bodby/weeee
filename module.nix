@@ -38,7 +38,7 @@ let
       '';
     };
   };
-  hrmmOpts = { ... }: {
+  hrmmOpts = _: {
     options = {
       packages = mkOption {
         type = attrsOf packageOpts;
@@ -51,7 +51,6 @@ let
       # TODO
       files = mkOption {
         type = attrs;
-        # TODO: "Symlink into"?
         description = ''
           Files to symlink into the user's $HOME directory.
         '';
@@ -62,17 +61,26 @@ let
   mkPackages = user: {
     ${user}.pkgs = builtins.mapAttrs (name: value:
       let
-        flagArgs = map (arg:
-          [ "--add-flags" (lib.strings.escapeShellArg arg) ]) value.flags;
-        envArgs = lib.attrsets.mapAttrsToList (name: value:
-          [ "--set" name value ]) value.env;
-        pathArgs = map (arg:
-          [ "--prefix" "PATH" ":" "${arg}/bin" ]) value.paths;
+        flagArgs = map (arg: [
+          "--add-flags"
+          (lib.strings.escapeShellArg arg)
+        ]) value.flags;
+        envArgs = lib.attrsets.mapAttrsToList (name: value: [
+          "--set"
+          name
+          value
+        ]) value.env;
+        pathArgs = [
+          "--prefix"
+          "PATH"
+          ":"
+          (lib.strings.makeBinPath value.paths)
+        ];
         args = lib.strings.escapeShellArgs (envArgs ++ flagArgs ++ pathArgs);
       in
       pkgs.symlinkJoin {
         inherit (value.package) name;
-        paths = [ value.package ] ++ value.paths;
+        paths = [ value.package ];
         nativeBuildInputs = [ pkgs.makeWrapper ];
         postBuild = ''
           for file in "$out"/bin/*; do
