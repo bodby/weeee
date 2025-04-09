@@ -16,7 +16,7 @@
         default = pkgs.callPackage file { };
       });
     in {
-      nixosModules.default = import ./module.nix;
+      nixosModules.default = ./module.nix;
       devShells = call ./shell.nix;
     };
 }
