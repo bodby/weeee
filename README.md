@@ -15,12 +15,12 @@ Install this as you would any other NixOS module.
 # flake.nix
 {
   inputs = {
-    nixpkgs.url = "git+https://github.com/NixOS/nixpkgs?shallow=1&ref=nixos-unstable";
     # Use either the GitHub or Codeberg repo.
     weeee = {
       url = "git+https://github.com/bodby/weeee?shallow=1&ref=master";
       url = "git+https://codeberg.org/bodby/weeee";
     };
+    nixpkgs.url = "git+https://github.com/NixOS/nixpkgs?shallow=1&ref=nixos-unstable";
   };
   outputs = { nixpkgs, weeee, ... }: {
     nixosConfigurations.default = nixpkgs.lib.nixosSystem {
