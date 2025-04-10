@@ -47,7 +47,7 @@ let
   weeee = builtins.fetchTarball "https://codeberg.org/bodby/weeee/archive/master.tar.gz";
 in {
   imports = [
-    (import weeee.nixosModules.default)
+    (import weeee)
   ];
 }
 ```
