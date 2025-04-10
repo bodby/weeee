@@ -1,6 +1,7 @@
 {
   inputs = { };
   outputs = _: {
-    nixosModules.default = ./module.nix;
+    # FIXME: Move module.nix to default.nix.
+    nixosModules.default = ./.;
   };
 }
