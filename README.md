@@ -24,7 +24,9 @@ Install this as you would any other NixOS module.
   };
   outputs = { nixpkgs, weeee, ... }: {
     nixosConfigurations.default = nixpkgs.lib.nixosSystem {
-      specialArgs = { inherit weeee; };
+      modules = [
+        weeee.nixosModules.default
+      ];
     };
   };
 }
@@ -45,7 +47,7 @@ let
   weeee = builtins.fetchTarball "https://codeberg.org/bodby/weeee/archive/master.tar.gz";
 in {
   imports = [
-    (import weeee)
+    (import weeee.nixosModules.default)
   ];
 }
 ```
