@@ -6,7 +6,7 @@
 }:
 let
   inherit (builtins) map;
-  inherit (lib.modules) mkOption;
+  inherit (lib.options) mkOption;
   inherit (lib.types) listOf package attrs attrsOf;
   users = builtins.attrNames config.hrmm;
 
