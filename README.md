@@ -17,8 +17,8 @@ Install this as you would any other NixOS module.
   inputs = {
     # Use either the GitHub or Codeberg repo.
     weeee = {
-      url = "git+https://github.com/bodby/weeee?shallow=1";
-      url = "git+https://codeberg.org/bodby/weeee?shallow=1";
+      url = "git+https://github.com/bodby/weeee?shallow=1?ref=master";
+      url = "git+https://codeberg.org/bodby/weeee?shallow=1?ref=master";
     };
     nixpkgs.url = "git+https://github.com/NixOS/nixpkgs?shallow=1&ref=nixos-unstable";
   };
