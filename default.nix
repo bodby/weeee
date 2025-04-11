@@ -87,7 +87,7 @@ let
             wrapProgram "$file" ${args}
           done
         '';
-      }) config.weeee;
+      }) config.weeee.${user};
   };
 in {
   options.weeee = mkOption {
