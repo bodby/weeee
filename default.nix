@@ -8,7 +8,7 @@ let
   inherit (builtins) map;
   inherit (lib.options) mkOption;
   inherit (lib.types) listOf package attrs attrsOf;
-  users = builtins.attrNames config.hrmm;
+  users = builtins.attrNames config.weeee;
 
   packageOpts = { name, ... }: {
     package = mkOption {
@@ -38,14 +38,14 @@ let
       '';
     };
   };
-  hrmmOpts = _: {
+  weeeeOpts = _: {
     options = {
       packages = mkOption {
         type = attrsOf packageOpts;
         description = ''
-          Set of packages to be made available in `hrmm.<user>.pkgs`. You want
+          Set of packages to be made available in `weeee.<user>.pkgs`. You want
           to define wrappers here and add their resultant derivations to
-          `users.users.<user>.packages` using `hrmm.<user>.pkgs`.
+          `users.users.<user>.packages` using `weeee.<user>.pkgs`.
         '';
       };
       # TODO
@@ -87,13 +87,13 @@ let
             wrapProgram "$file" ${args}
           done
         '';
-      }) config.hrmm;
+      }) config.weeee;
   };
 in {
-  options.hrmm = mkOption {
-    type = attrsOf (lib.types.submodule hrmmOpts);
+  options.weeee = mkOption {
+    type = attrsOf (lib.types.submodule weeeeOpts);
   };
   config = {
-    hrmm = map mkPackages users;
+    weeee = map mkPackages users;
   };
 }
