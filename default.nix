@@ -7,93 +7,63 @@
 let
   inherit (builtins) map;
   inherit (lib.options) mkOption;
-  inherit (lib.types) listOf package attrs attrsOf;
-  users = builtins.attrNames config.weeee;
+  inherit (lib.types) listOf package attrs attrsOf submodule;
+  inherit (config.weeee) users;
 
   packageOpts = { name, ... }: {
-    package = mkOption {
-      type = package;
-      default = pkgs.${name};
-      description = ''
-        The package to wrap. Defaults to the attribute's name.
-      '';
-    };
-    flags = mkOption {
-      type = listOf lib.types.str;
-      description = ''
-        Flags to prepend to the wrapper. This is how you would want to configure
-        programs, using e.g. `--config`.
-      '';
-    };
-    env = mkOption {
-      type = attrs;
-      description = ''
-        Environment variables that should be visible to the wrapper.
-      '';
-    };
-    paths = mkOption {
-      type = listOf package;
-      description = ''
-        Extra packages to add to $PATH.
-      '';
+    options = {
+      package = mkOption {
+        type = package;
+        default = pkgs.${name};
+        description = ''
+          The package to wrap. Defaults to the attribute's name.
+        '';
+      };
+      flags = mkOption {
+        type = listOf (lib.types.either lib.types.str lib.types.path);
+        default = [ ];
+        description = ''
+          Flags to prepend to the wrapper. This is how you would want to configure
+          programs, using e.g. `--config`.
+        '';
+      };
+      env = mkOption {
+        type = attrs;
+        default = { };
+        description = ''
+          Environment variables that should be visible to the wrapper.
+        '';
+      };
+      paths = mkOption {
+        type = listOf package;
+        default = [ ];
+        description = ''
+          Extra packages to add to $PATH.
+        '';
+      };
     };
   };
-  weeeeOpts = _: {
+  userOpts = _: {
     options = {
       packages = mkOption {
-        type = attrsOf packageOpts;
+        type = attrsOf (submodule packageOpts);
         description = ''
-          Set of packages to be made available in `weeee.<user>.pkgs`. You want
+          Set of packages to be made available in `weeee.users.<user>.pkgs`. You want
           to define wrappers here and add their resultant derivations to
           `users.users.<user>.packages` using `weeee.<user>.pkgs`.
         '';
       };
       # TODO
-      files = mkOption {
-        type = attrs;
-        description = ''
-          Files to symlink into the user's $HOME directory.
-        '';
-      };
+      # files = mkOption {
+      #   type = attrs;
+      #   description = ''
+      #     Files to symlink into the user's $HOME directory.
+      #   '';
+      # };
     };
   };
-
-  mkPackages = user: {
-    ${user}.pkgs = builtins.mapAttrs (name: value:
-      let
-        flagArgs = map (arg: [
-          "--add-flags"
-          (lib.strings.escapeShellArg arg)
-        ]) value.flags;
-        envArgs = lib.attrsets.mapAttrsToList (name: value: [
-          "--set"
-          name
-          value
-        ]) value.env;
-        pathArgs = [
-          "--prefix"
-          "PATH"
-          ":"
-          (lib.strings.makeBinPath value.paths)
-        ];
-        args = lib.strings.escapeShellArgs (envArgs ++ flagArgs ++ pathArgs);
-      in
-      pkgs.symlinkJoin {
-        inherit (value.package) name;
-        paths = [ value.package ];
-        nativeBuildInputs = [ pkgs.makeWrapper ];
-        postBuild = ''
-          for file in "$out"/bin/*; do
-            wrapProgram "$file" ${args}
-          done
-        '';
-      }) config.weeee.${user};
-  };
 in {
-  options.weeee = mkOption {
-    type = attrsOf (lib.types.submodule weeeeOpts);
-  };
-  config = {
-    weeee = map mkPackages users;
+  options.weeee.users = mkOption {
+    type = attrsOf (submodule userOpts);
   };
 }
