@@ -1,6 +1,6 @@
 {
   inputs = { };
   outputs = _: {
-    nixosModules.default = ./.;
+    nixosModules.weeee = ./default.nix;
   };
 }
